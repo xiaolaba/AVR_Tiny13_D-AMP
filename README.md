@@ -15,3 +15,9 @@ test, 10K VR, ok
 https://youtu.be/lBp4UAOIjj0 
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Gl5eU9fMuMM/0.jpg)](https://www.youtube.com/watch?v=Gl5eU9fMuMM)
+.  
+.
+### uses batch file to build hex for flash buring
+build.bat, build C source code to burn image.  
+burn.bat, it is saying as it is.  
+terminal, connect to chip for command mode.  
