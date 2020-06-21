@@ -8,7 +8,7 @@ circuit,
 
 test, 5K/1K, no good  
 https://youtu.be/Gl5eU9fMuMM  
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Gl5eU9fMuMM/0.jpg)](https://www.youtube.com/watch?v=Gl5eU9fMuMM)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/lBp4UAOIjj0/0.jpg)](https://www.youtube.com/watch?v=Gl5eU9fMuMM)
 .  
 
 test, 10K VR, ok  
