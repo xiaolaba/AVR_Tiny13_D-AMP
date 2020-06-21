@@ -2,6 +2,12 @@
 clone https://github.com/lpodkalicki/blog/tree/master/avr/attiny13/052_8bit_mono_class_d_amplifier  
   
 ### build to test  
+uses batch file to build hex for flash burning
+build.bat, build C source code to burn image.  
+burn.bat, it is saying as it is.  
+terminal, connect to chip for command mode.  
+  
+https://github.com/xiaolaba/Tiny13_D-AMP
 .  
 circuit,
 
@@ -19,7 +25,4 @@ https://youtu.be/lBp4UAOIjj0
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Gl5eU9fMuMM/0.jpg)](https://www.youtube.com/watch?v=Gl5eU9fMuMM)
 .  
 .
-### uses batch file to build hex for flash burning
-build.bat, build C source code to burn image.  
-burn.bat, it is saying as it is.  
-terminal, connect to chip for command mode.  
+ 
