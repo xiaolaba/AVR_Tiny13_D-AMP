@@ -1,0 +1,120 @@
+
+Tiny13_D_AMP.out:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000074  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .debug_aranges 00000020  00000000  00000000  000000c8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  2 .debug_pubnames 0000002a  00000000  00000000  000000e8  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   0000008a  00000000  00000000  00000112  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 00000056  00000000  00000000  0000019c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   000000d0  00000000  00000000  000001f2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  00000030  00000000  00000000  000002c4  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    000000a4  00000000  00000000  000002f4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	09 c0       	rjmp	.+18     	; 0x14 <__ctors_end>
+   2:	0e c0       	rjmp	.+28     	; 0x20 <__bad_interrupt>
+   4:	0d c0       	rjmp	.+26     	; 0x20 <__bad_interrupt>
+   6:	0c c0       	rjmp	.+24     	; 0x20 <__bad_interrupt>
+   8:	0b c0       	rjmp	.+22     	; 0x20 <__bad_interrupt>
+   a:	0a c0       	rjmp	.+20     	; 0x20 <__bad_interrupt>
+   c:	09 c0       	rjmp	.+18     	; 0x20 <__bad_interrupt>
+   e:	08 c0       	rjmp	.+16     	; 0x20 <__bad_interrupt>
+  10:	07 c0       	rjmp	.+14     	; 0x20 <__bad_interrupt>
+  12:	20 c0       	rjmp	.+64     	; 0x54 <__vector_9>
+
+00000014 <__ctors_end>:
+  14:	11 24       	eor	r1, r1
+  16:	1f be       	out	0x3f, r1	; 63
+  18:	cf e9       	ldi	r28, 0x9F	; 159
+  1a:	cd bf       	out	0x3d, r28	; 61
+  1c:	02 d0       	rcall	.+4      	; 0x22 <main>
+  1e:	28 c0       	rjmp	.+80     	; 0x70 <_exit>
+
+00000020 <__bad_interrupt>:
+  20:	ef cf       	rjmp	.-34     	; 0x0 <__vectors>
+
+00000022 <main>:
+int
+main(void)
+{
+
+	/* setup */
+	DDRB |= _BV(AUDIO_OUT); // set AUDIO_OUT pin as output
+  22:	b8 9a       	sbi	0x17, 0	; 23
+	TCCR0A |= _BV(WGM01)|_BV(WGM00); // set timer mode to FAST PWM
+  24:	8f b5       	in	r24, 0x2f	; 47
+  26:	83 60       	ori	r24, 0x03	; 3
+  28:	8f bd       	out	0x2f, r24	; 47
+	TCCR0A |= _BV(COM0A1); // connect PWM pin to channel A
+  2a:	8f b5       	in	r24, 0x2f	; 47
+  2c:	80 68       	ori	r24, 0x80	; 128
+  2e:	8f bd       	out	0x2f, r24	; 47
+	TCCR0B |= _BV(CS00); // set prescaler to 1
+  30:	83 b7       	in	r24, 0x33	; 51
+  32:	81 60       	ori	r24, 0x01	; 1
+  34:	83 bf       	out	0x33, r24	; 51
+	ADMUX |= _BV(MUX0)|_BV(MUX1); // select ADC3 (PB3)
+  36:	87 b1       	in	r24, 0x07	; 7
+  38:	83 60       	ori	r24, 0x03	; 3
+  3a:	87 b9       	out	0x07, r24	; 7
+	ADMUX |= _BV(REFS0); // set internal 1.1V reference voltage
+  3c:	3e 9a       	sbi	0x07, 6	; 7
+	ADMUX |= _BV(ADLAR); // left adjust of ADC result
+  3e:	3d 9a       	sbi	0x07, 5	; 7
+	ADCSRA |= _BV(ADPS1)|_BV(ADPS0); // set ADC division factor to 8
+  40:	86 b1       	in	r24, 0x06	; 6
+  42:	83 60       	ori	r24, 0x03	; 3
+  44:	86 b9       	out	0x06, r24	; 6
+	ADCSRA |= _BV(ADEN)|_BV(ADIE); // enable ADC and interrupt
+  46:	86 b1       	in	r24, 0x06	; 6
+  48:	88 68       	ori	r24, 0x88	; 136
+  4a:	86 b9       	out	0x06, r24	; 6
+	ADCSRA |= _BV(ADATE); // set ADC auto-trigger
+  4c:	35 9a       	sbi	0x06, 5	; 6
+	ADCSRA |= _BV(ADSC); // start conversion
+  4e:	36 9a       	sbi	0x06, 6	; 6
+	sei(); // enable global interrupts
+  50:	78 94       	sei
+  52:	ff cf       	rjmp	.-2      	; 0x52 <__SREG__+0x13>
+
+00000054 <__vector_9>:
+	/* loop */
+	while (1);
+}
+
+ISR(ADC_vect)
+{
+  54:	1f 92       	push	r1
+  56:	0f 92       	push	r0
+  58:	0f b6       	in	r0, 0x3f	; 63
+  5a:	0f 92       	push	r0
+  5c:	11 24       	eor	r1, r1
+  5e:	8f 93       	push	r24
+
+	OCR0A = ADCH; // the magic
+  60:	85 b1       	in	r24, 0x05	; 5
+  62:	86 bf       	out	0x36, r24	; 54
+  64:	8f 91       	pop	r24
+  66:	0f 90       	pop	r0
+  68:	0f be       	out	0x3f, r0	; 63
+  6a:	0f 90       	pop	r0
+  6c:	1f 90       	pop	r1
+  6e:	18 95       	reti
+
+00000070 <_exit>:
+  70:	f8 94       	cli
+
+00000072 <__stop_program>:
+  72:	ff cf       	rjmp	.-2      	; 0x72 <__stop_program>
